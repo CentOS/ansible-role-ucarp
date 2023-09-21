@@ -1,0 +1,7 @@
+# Managed by Ansible
+
+PASSFILE=/etc/ucarp/vip-{{ item.vid }}.pwd
+BIND_INTERFACE="{{ item.interface }}"
+SOURCE_ADDRESS="{{ item.src_address }}"
+VIP_ADDRESS="{{ item.vip_address }}"
+OPTIONS="--shutdown --preempt --advbase={{ item.advbase|default('1') }} "

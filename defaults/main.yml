@@ -1,1 +1,24 @@
 # Defaults variables for role ucarp
+
+# Which rpm pkgs to install
+ucarp_pkgs:
+  - ucarp
+  - initscripts
+
+# List of Virtual IP Addresses to bind to specific interface
+# See https://github.com/jedisct1/UCarp for parameters but following list should help
+# example:
+# ucarp_vip_list:
+#   - vid: 001                    # starting from 1 to 255 , group id for carp protocol
+#     interface: eth0             # the interface  on which we'll bind another virtual ip
+#     src_address: 192.168.1.1    # existing ip on interface
+#     vip_address: 192.168.1.100  # virtual one
+#     carp_pass: mypass1          # passwd that will be hashed/exchanged on adv by nodes (not too long)
+#   - vid: 002
+#     interface: eth1
+#     src_address: 172.16.1.1
+#     vip_address: 172.16.1.10
+#     carp_pass: mypass2
+#     advbase: 2                  # Special example : default adverisement interval is 1 but higher value means we can just become "secondary" by default and only "primary" if the one with advbase=1 isn't reachable
+#
+ucarp_vip_list: []

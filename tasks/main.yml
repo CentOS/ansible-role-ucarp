@@ -8,3 +8,45 @@
   tags:
     - vars
 
+- name: Installing required packages for ucarp HA
+  yum:
+    name: "{{ ucarp_pkgs }}"
+    state: installed
+
+- name: Defining common conf
+  template:
+    src: vip-common.conf.j2
+    dest: /etc/ucarp/vip-common.conf
+
+- name: Defining VIP addresses through list
+  template:
+    src: vip.conf.j2
+    dest: "/etc/ucarp/vip-{{ item.vid }}.conf"
+  with_items: "{{ ucarp_vip_list }}"
+  loop_control:
+    label: "{{ item.vip_address }}"
+  register: carp_config
+  tags:
+    - config
+
+- name: Defining VIP carp pass
+  template:
+    src: vip.pwd.j2
+    dest: "/etc/ucarp/vip-{{ item.vid }}.pwd"
+  with_items: "{{ ucarp_vip_list }}"
+  loop_control:
+    label: "{{ item.vip_address }}"
+  tags:
+    - config
+
+- name: Ensuring VIP are reloaded on changes
+  service:
+    name: "ucarp@{{ item.item.vid }}"
+    state: restarted
+    enabled: True
+  with_items: "{{ carp_config.results }}"
+  when: item is changed
+  tags:
+    - config
+  loop_control:
+    label: "{{ item.item.vip_address }}"
