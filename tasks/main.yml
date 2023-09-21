@@ -22,6 +22,7 @@
   template:
     src: vip.conf.j2
     dest: "/etc/ucarp/vip-{{ item.vid }}.conf"
+    mode: '0600'
   with_items: "{{ ucarp_vip_list }}"
   loop_control:
     label: "{{ item.vip_address }}"
@@ -33,6 +34,7 @@
   template:
     src: vip.pwd.j2
     dest: "/etc/ucarp/vip-{{ item.vid }}.pwd"
+    mode: '0600'
   with_items: "{{ ucarp_vip_list }}"
   loop_control:
     label: "{{ item.vip_address }}"
